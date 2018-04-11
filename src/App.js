@@ -5,22 +5,22 @@ import uuid from 'uuid'
 import {createStore} from 'redux'
 
 const initialState = {
-    activeThreadId: '1-fca2',
+    activeThreadId: '1',
     threads: [
         {
-            id: '1-fca2',
-            title: 'Buzz Aldrin',
+            id: '1',
+            title: 'Title 1',
             messages: [
                 {
-                    text: 'Twelve minutes to ignition.',
+                    text: 'Text1 for Title1',
                     timestamp: Date.now(),
                     id: uuid.v4(),
                 },
             ],
         },
         {
-            id: '2-be91',
-            title: 'Michael Collins',
+            id: '2',
+            title: 'Title 2',
             messages: [],
         },
     ],
@@ -58,11 +58,27 @@ class App extends Component {
         return (
             <div>
                 <ThreadTabs tabs={tabs}/>
+                <Thread thread={activeThread}/>
 
             </div>
         )
 
 
+    }
+}
+class Thread extends Component{
+    render(){
+        const messages = this.props.thread.messages.map((message,index)=>(
+            <div key={index}>
+                {message.text}
+            </div>
+        ))
+
+        return(
+            <div>
+                {messages}
+            </div>
+        )
     }
 }
 
