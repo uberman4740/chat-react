@@ -4,23 +4,27 @@ import './App.css'
 import uuid from 'uuid'
 import {createStore} from 'redux'
 
+var moment = require('moment');
+
+moment().format();
+
 const initialState = {
     activeThreadId: '1',
     threads: [
         {
             id: '1',
-            title: 'Title 1',
+            title: 'Karan',
             messages: [
                 {
-                    text: 'Text1 for Title1',
-                    timestamp: Date.now(),
+                    text: 'Hey! how are you?',
+                    timestamp: moment(Date.now(), "x").format("DD MMM YYYY hh:mm a"),
                     id: uuid.v4(),
                 },
             ],
         },
         {
             id: '2',
-            title: 'Title 2',
+            title: 'Steve',
             messages: [],
         },
     ],
@@ -34,7 +38,7 @@ function reducer(state, action) {
             const newMessage = {
                 id: uuid.v4(),
                 text: action.text,
-                time: Date.now()
+                timestamp: moment(Date.now(), "x").format("DD MMM YYYY hh:mm a")
             }
             const threadIndex = state.threads.findIndex((t) => (
                 t.id === action.threadId
@@ -71,7 +75,7 @@ function reducer(state, action) {
 
                 }
             }
-        else if(action.type=='OPEN_THREAD'){
+        else if(action.type==='OPEN_THREAD'){
 
             return {
                 ...state,
@@ -101,6 +105,7 @@ class App extends Component {
 
     componentDidMount() {
         store.subscribe(() => this.forceUpdate())
+        console.log(moment(Date.now(), "x").format("DD MMM YYYY hh:mm a"))
     }
 
     render() {
@@ -119,11 +124,14 @@ class App extends Component {
         ))
 
         return (
-            <div>
-                <ThreadTabs tabs={tabs}/>
-                <Thread thread={activeThread}/>
+            <div className={'ui card fluid'}>
+                <div className={'ui segment'}>
+                    <ThreadTabs tabs={tabs}/>
+                    <Thread thread={activeThread}/>
 
+                </div>
             </div>
+
         )
 
 
@@ -141,9 +149,11 @@ class Thread extends Component {
 
     render() {
         const messages = this.props.thread.messages.map((message, index) => (
-            <div onClick={() => this.handleClick(message.id)}>
-                <div key={index}>
+            <div onClick={() => this.handleClick(message.id)} className={'comment'}>
+                <div key={index} className={'text'}
+                >
                     {message.text}
+                    <span className='meta'> &nbsp;@{message.timestamp}</span>
                 </div>
             </div>
 
@@ -193,7 +203,7 @@ class MessageInput extends Component {
 
     render() {
         return (
-            <div>
+            <div className={'ui input'}>
                 <input
                     onChange={this.onChange}
                     value={this.state.value}
@@ -202,6 +212,7 @@ class MessageInput extends Component {
                 <button
                     onClick={this.handleSubmit}
                     type='submit'
+                    className={'ui primary button'}
                 >Submit
                 </button>
 
@@ -238,7 +249,7 @@ class ThreadTabs extends Component {
 
         ))
         return (
-            <div>
+            <div className='ui top attached tabular menu'>
                 {tabs}
 
             </div>
