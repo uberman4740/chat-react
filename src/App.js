@@ -71,11 +71,20 @@ function reducer(state, action) {
 
                 }
             }
+        else if(action.type=='OPEN_THREAD'){
+
+            return {
+                ...state,
+                activeThreadId: action.id
+            }
+
+            }
 
             else {
                 return state
 
             }
+
 
 
 
@@ -207,11 +216,22 @@ class ThreadTabs extends Component {
         console.log("Active tab")
         console.log(this.props.tabs.map(tab => tab.active))
     }
+    handleClick = (id)=>{
+        store.dispatch({
+            type: 'OPEN_THREAD',
+            id: id
+        })
+    }
 
 
     render() {
         const tabs = this.props.tabs.map((tab, index) => (
-            <div key={index}>
+
+            <div key={index}
+                 onClick={()=>this.handleClick(tab.id)}
+                 className={tab.active ? 'active item': 'item'}
+            >
+
                 {tab.title}
             </div>
 
