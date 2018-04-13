@@ -28,12 +28,10 @@ const initialState = {
         },
     ],
 };
-function reducer(state={} ,action){
-    return {
-        activeThreadId: activeThreadIdReducer(state.activeThreadId,action),
-        threads: threadsReducer(state.threads,action)
-    }
-}
+const reducer = combineReducers({
+    activeThreadId: activeThreadIdReducer,
+    threads: threadsReducer,
+});
 function activeThreadIdReducer(state='1',action) {
     if (action.type === 'OPEN_THREAD'){
         return action.id
@@ -102,63 +100,6 @@ function threadsReducer(state=[
         return state
     }
 }
-// function reducer(state, action) {
-//     if
-//     (action.type === 'ADD_MESSAGE') {
-//         const newMessage = {
-//             id: uuid.v4(),
-//             text: action.text,
-//             timestamp: moment(Date.now(), 'x').format('DD MMM YYYY hh:mm a'),
-//         };
-//         const threadIndex = state.threads.findIndex(t => (
-//             t.id === action.threadId
-//         ));
-//         console.log('In reducer');
-//         console.log(threadIndex);
-//
-//         const newThread = {
-//             ...state.threads[threadIndex],
-//             messages: state.threads[threadIndex].messages.concat(newMessage),
-//         };
-//         return {
-//             ...state,
-//             threads: [...state.threads.slice(0, threadIndex), newThread, ...state.threads.slice(threadIndex + 1, state.threads.length),
-//
-//             ],
-//
-//         };
-//     } else if (action.type === 'DELETE_MESSAGE') {
-//         const threadIndexx = state.threads.findIndex(t => t.messages.find(m => (
-//             m.id === action.id
-//         )));
-//         const oldThread = state.threads[threadIndexx];
-//         const newThread = {
-//             ...oldThread,
-//             messages: oldThread.messages.filter(m => m.id !== action.id)
-//         };
-//         return {
-//             ...state,
-//             threads: [...state.threads.slice(0, threadIndexx), newThread, ...state.threads.slice(threadIndexx + 1, state.threads.length),
-//
-//             ],
-//
-//         };
-//     } else if (action.type === 'OPEN_THREAD') {
-//         return {
-//             ...state,
-//             activeThreadId: action.id,
-//         };
-//     }
-//
-//
-//     return state;
-//
-//
-//     // return state
-//     // type: 'ADD_MESSAGE',
-//     //     text: this.state.value,
-//     //     threadId: this.props.threadId
-// }
 
 const store = createStore(reducer);
 
