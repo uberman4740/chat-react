@@ -84,6 +84,20 @@ function threadsReducer(state=[
 
 
     }
+    else if (action.type === 'DELETE_MESSAGE'){
+        const index = state.findIndex(
+            (i)=> i.messages.find((m)=>m.id=== action.id)
+        )
+        const updatedThread = {
+            ...state[index],
+            messages: state[index].messages.filter((m)=> m.id !== action.id)
+        }
+
+        return [
+            ...state.slice(0,index), updatedThread, ...state.slice(index+1,state.length),
+        ]
+
+    }
     else {
         return state
     }
